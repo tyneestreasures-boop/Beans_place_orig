@@ -1,0 +1,170 @@
+// ============================================================
+// APP.JSX — The Root Component (Day 2)
+// ============================================================
+// This is the MAIN file of your React application.
+// It acts as the "layout manager" — it imports all section
+// components and arranges them on the page.
+//
+// WHAT YOU WILL LEARN:
+// - How to import components from other files
+// - How to use export default to share a component
+// - How to compose a page from smaller components
+// - How JSX lets you use custom components like HTML tags
+//
+// ============================================================
+
+// STEP 1: Import your section components
+// Each component lives in its own file inside ./components/
+// Use this syntax:  import ComponentName from "./components/ComponentName";
+//
+// Import the following components (in this order):
+// - RibbonTicker
+// - NavBar
+// - HeroSection
+// - CtaSection
+// - FeaturesSection
+// - ProductShowcase
+// - FooterSection
+// - AboutSection
+// - ContactSection
+
+/* --- YOUR IMPORTS GO HERE --- */
+import { useMemo, useState, useEffect } from "react";
+
+import NavBar from "./components/NavBar";
+import HeroSection from "./components/HeroSection";
+import RibbonTicker from "./components/RibbonTicker"
+// STEP 2: Create and export the App component
+// Use: export default function App() { ... }
+//
+// STEP 3: Inside the return(), build the page layout
+// Wrap everything in a <div className="app">
+//
+// Place your components in this order:
+//   1. <NavBar />
+//   2. Hero section wrapped in: <section className="hero bg-hero">
+//        Inside that, wrap <HeroSection /> in: <div className="hero-grid">
+//   3. <RibbonTicker />
+//   4. Features section wrapped in: <section className="features bg-features" id="shop">
+//   5. Product Showcase wrapped in: <section className="bg-cta">
+//   6. <RibbonTicker /> (used again — components are reusable!)
+//   7. CTA section wrapped in: <section className="bg-cta">
+//   8. About section wrapped in: <section className="bg-cta" id="about">
+//   9. Contact section wrapped in: <section className="bg-cta" id="contact">
+//  10. Footer section wrapped in: <section className="bg-footer">
+//
+// HINT: The id attributes (like id="shop") are anchor targets
+// for the navigation links in the NavBar.
+
+/* --- YOUR COMPONENT CODE GOES HERE --- */
+
+// imports go below here
+
+export default function App() {
+    const [cartOpen, setCartOpen] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [theme, setTheme] = useState(() => {
+        if (typeof window === "undefined") return "light";
+        const savedTheme = window.localStorage.getItem("theme");
+        if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    });
+
+    useEffect(() => {
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        window.localStorage.setItem("theme", theme);
+    }, [theme]);
+
+    const toggleCart = () => setCartOpen((open) => !open);
+
+    const addToCart = (product) => {
+        setCartItems((current) => {
+            const existing = current.find((item) => item.id === product.id);
+            if (existing) {
+                return current.map((item) => 
+                  item.id === product.id ? { ...item, qty: item.qty + 1 } : item,  
+                );
+            }
+
+            return [...current, { ...product, qty: 1 }];
+        });
+    };
+
+    const updateCartQty = (id, delta) => {
+        setCartItems((current) => 
+            current
+                .map((item) => 
+                    item.id === id
+                    ? { ...item, qty: Math.max(0, item.qty + delta)}
+                    : item,
+                )
+                .filter((item) => item.qty > 0),
+        );
+    };
+
+    const removeFromCart = (id) => {
+        setCartItems((current) => current.filter((itme) => item.id !== id));
+    };
+
+    const cartCount = useMemo(
+        () => cartItems.reduce((sum, item) => sum + item.qty, 0),
+        [cartItems],
+    );
+
+    return(
+        <div className="app">
+            {/* SHOPPING CART */}
+
+            {/* NAVBAR */}
+            <NavBar 
+                toggleCart={toggleCart}
+                cartCount={cartCount}
+                theme={theme}
+                onToggleTheme={() => 
+                    setTheme((current) => (current === "light" ? "dark" : "light"))
+                }
+            />
+            {/* HERO */}
+            <section className="hero bg-hero">
+                <div className="hero-grid">
+                <HeroSection />
+                </div>
+            </section>
+
+            {/* RIBBON TICKER */}
+            <RibbonTicker />
+
+            {/* FEATURES / CAROUSEL */}
+            <section className="features bg-features" id="shop">
+
+            </section>
+
+            {/* PRODUCT SHOWCASE */}
+            <section className="bg-cta">
+
+            </section>
+
+            {/* CTA */}
+            <section className="bg-cta">
+
+            </section>
+
+            {/* ABOUT */}
+            <section className="bg-cta" id="about">
+
+            </section>
+
+            {/* CONTACT */}
+            <section className="bg-cta" id="contact">
+
+            </section>
+
+            {/* FOOTER */}
+            <section className="bg-footer">
+
+            </section>
+        </div>
+    );
+}
