@@ -105,82 +105,79 @@ import Separator from "./ui/Separator";
 //   </div>
 
 /* --- YOUR COMPONENT CODE GOES HERE --- */
-export default function ProductShowcase ({ products = [], addToCart}) {
+export default function ProductShowcase ({products = [], addToCart}) {
     return (
         <div className="product-showcase">
             <ScrollReveal animation="fadeUp">
                 <Badge variant="accent" className="mb-4">
+                        Curated Selection
+                </Badge>
+                </ScrollReveal>     
+
                     <ScrollReveal animation="fadeUp" delay={0.1}>
                         <h2 className="product-showcase-title">
                             Shop our 
-                            <br>
+                            <br />
                             <span className="muted">Finest Beans</span>
-                            </br>
-                            
                         </h2>
-
                     </ScrollReveal>
+
                     <ScrollReveal animation="fadeIn" delay={0.15}>
                         <Separator className="mx-auto mb-4 max-w-48" />
                         </ScrollReveal>
+
                         <ScrollReveal animation="fadeUp" delay={0.15}>
                             <p className="product-showcase-subitle">
                                 Hand-selected single origin coffees, roasted to order. Each bag ships within 48 hours for maximun freshness.
                             </p>
-
                         </ScrollReveal>
+
                         <StaggerContainer staggerDelay={0.1} className="product-grid">
                             {products.map((product) => (
-                                <StaggerItem key={products.name} animation="fadeUp">
+                                <StaggerItem key={product.name} animation="fadeUp">
                                     <Motion.div
                                     className="product-card"
                                     whileHover={{ y: -8, transition: {duration: 0.25} }}
                                     >
                                         <div className="product-card-image">
-                                            <img src={products.image} loading="lazy" />
-                                            {products.badge && (
-                                            <span className="product-badge">{products.badge}</span>    
+                                            <img src={product.image} alt={product.name} loading="lazy" />
+                                            {product.badge && (
+                                            <span className="product-badge">{product.badge}</span>    
                                             )}
                                             </div>
                                             <div className="product-card-info">
                                                 <div className="product-card-header">
                                                     <h3>{product.name}</h3>
                                                     <span className="product-price">{product.price}</span>
-
                                             </div>
+
                                             <p className="product-origin">
                                                 {product.origin} - {product.roast} Roast
                                             </p>
+
                                             <p className="product-notes">{product.notes}</p>
 
                                             <Button
                                                     variant="primary"
                                                     size="sm"
                                                     className="w-full mt-3"
-                                                    onClick={() => addToCart (product)}>
+                                                    onClick={() => addToCart (product)}
+                                            >
                                                         Add to Cart
                                             </Button>
                                             </div>
-
                                     </Motion.div>
                                 </StaggerItem>
                             ))}
                         </StaggerContainer>
 
                         <ScrollReveal animation="fadeUp" delay={0.2}>
-
-                        </ScrollReveal>
-                        <div className="product-showcase-cta">
+                         <div className="product-showcase-cta">
                             <Button variant="accent" size="lg">
                                 View All Coffee
                             </Button>
-
                         </div>
-
-                </Badge>
-
-            </ScrollReveal>
-
+                     </ScrollReveal>
         </div>
     );
 }
