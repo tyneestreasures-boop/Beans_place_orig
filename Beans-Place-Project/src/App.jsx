@@ -36,6 +36,8 @@ import HeroSection from "./components/HeroSection";
 import RibbonTicker from "./components/RibbonTicker";
 import FeaturesSection from "./components/FeaturesSection";
 import ProductShowcase from "./components/ProductShowcase";
+import ShoppingCart from "./components/ShoppingCart";
+import CtaSection from './components/CtaSection';
 
 import imgEthiopianHarrar from "./assets/Ethiopian-Harrar-Bag.png";
 import imgColombianSupremo from "./assets/Colombian-Supremo-Bag.png";
@@ -188,6 +190,13 @@ export default function App() {
     return(
         <div className="app">
             {/* SHOPPING CART */}
+            <ShoppingCart
+            isOpen={cartOpen}
+            onToggle={toggleCart}
+            items={cartItems}
+            updateQty={updateCartQty}
+            removeItem={removeFromCart}
+            />
 
             {/* NAVBAR */}
             <NavBar 
@@ -222,6 +231,7 @@ export default function App() {
 
             {/* CTA */}
             <section className="bg-cta">
+                <CtaSection />
 
             </section>
 
