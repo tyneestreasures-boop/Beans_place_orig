@@ -38,6 +38,7 @@ import FeaturesSection from "./components/FeaturesSection";
 import ProductShowcase from "./components/ProductShowcase";
 import ShoppingCart from "./components/ShoppingCart";
 import CtaSection from './components/CtaSection';
+import AboutSection from "./components/AboutSection";
 
 import imgEthiopianHarrar from "./assets/Ethiopian-Harrar-Bag.png";
 import imgColombianSupremo from "./assets/Colombian-Supremo-Bag.png";
@@ -237,6 +238,7 @@ export default function App() {
 
             {/* ABOUT */}
             <section className="bg-cta" id="about">
+                <AboutSection />
 
             </section>
 
